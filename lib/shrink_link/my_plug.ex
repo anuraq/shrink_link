@@ -1,5 +1,7 @@
 defmodule ShrinkLink.MyPlug do
   use Plug.Router
+  alias ShrinkLink.Repo
+  alias ShrinkLink.Links
 
   plug :match
   plug Plug.Parsers, parsers: [:json],
@@ -14,6 +16,8 @@ defmodule ShrinkLink.MyPlug do
     blob = Map.get(conn.body_params, "blob")
     blob = unless blob, do: Nanoid.generate(5), else: blob
     blob = String.downcase(blob)
+    changeset = Links.changeset(%Links{}, %{blob: blob, url: url})
+    Repo.insert(changeset)
     IO.puts("Blob is #{blob} and Url is #{url}")
     send_resp(conn, 200, "Success!!")
   end

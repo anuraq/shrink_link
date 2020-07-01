@@ -4,7 +4,8 @@ defmodule ShrinkLink.Application do
 
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: ShrinkLink.MyPlug, options: [port: 8080]}
+      {Plug.Cowboy, scheme: :http, plug: ShrinkLink.MyPlug, options: [port: 8080]},
+      {ShrinkLink.Repo, []}
     ]
     opts = [strategy: :one_for_one, name: ShrinkLink.Supervisor]
 
