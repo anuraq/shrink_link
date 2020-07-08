@@ -16,10 +16,11 @@ defmodule ShrinkLink.MyPlug do
     blob = Map.get(conn.body_params, "blob")
     blob = unless blob, do: Nanoid.generate(5), else: blob
     blob = String.downcase(blob)
-    changeset = Links.changeset(%Links{}, %{blob: blob, url: url})
-    Repo.insert(changeset)
+    {:ok, map} = JSON.Encoder.encode(%{blob: blob, url: url})
+    #changeset = Links.changeset(%Links{}, %{blob: blob, url: url})
+    #Repo.insert(changeset)
     IO.puts("Blob is #{blob} and Url is #{url}")
-    send_resp(conn, 200, "Success!!")
+    send_resp(conn, 200, map)
   end
 
   match _ do
