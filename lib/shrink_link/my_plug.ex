@@ -3,6 +3,12 @@ defmodule ShrinkLink.MyPlug do
   alias ShrinkLink.Repo
   alias ShrinkLink.Links
   import Ecto.Query, only: [from: 2]
+  @template_dir "lib/shrink_link/templates"
+
+
+  if Mix.env == :dev do
+    use Plug.Debugger
+  end
 
   plug :match
   plug Plug.Parsers, parsers: [:json],
@@ -21,17 +27,29 @@ defmodule ShrinkLink.MyPlug do
     #changeset = Links.changeset(%Links{}, %{blob: blob, url: url})
     c = Repo.exists?(from u in ShrinkLink.Links, where: u.blob == ^blob)
     #Repo.insert(changeset)
-    IO.puts("Blob is #{blob} and Url is #{url} and count is #{c}")
-    update_resp_header(conn,"content-type","application/json; charset=utf-8",&(&1 <> "; charset=utf-8")) |> send_resp( 200, map)
+    if c, do: send_response_NO(conn), else: send_response_OK(conn, map)
+    #IO.puts("Blob is #{blob} and Url is #{url} and count is #{c}")
+  end
+
+  get "/" do
+    body =
+    @template_dir
+    |> Path.join("index.html")
+    |> String.replace_suffix(".html", ".html.eex")
+    |> EEx.eval_file(a: [])
+    send_resp(conn, 200, body)
   end
 
   match _ do
     send_resp(conn, 404, "oops")
   end
 
-  defp generate_nanoid do
-
+  defp send_response_OK(conn, map) do
+    update_resp_header(conn,"content-type","application/json; charset=utf-8",&(&1 <> "; charset=utf-8")) |> send_resp( 200, map)
   end
 
+  defp send_response_NO(conn) do
+    send_resp(conn ,200, "id exists give another one")
+  end
 
 end
