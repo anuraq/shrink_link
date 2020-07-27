@@ -31,6 +31,10 @@ defmodule ShrinkLink.MyPlug do
     #IO.puts("Blob is #{blob} and Url is #{url} and count is #{c}")
   end
 
+  post "/link" do
+
+  end
+
   get "/" do
     body =
     @template_dir
