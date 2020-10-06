@@ -25,14 +25,10 @@ defmodule ShrinkLink.MyPlug do
     blob = String.downcase(blob)
     {:ok, map} = JSON.Encoder.encode(%{blob: blob, url: url})
     #changeset = Links.changeset(%Links{}, %{blob: blob, url: url})
-    c = Repo.exists?(from u in ShrinkLink.Links, where: u.blob == ^blob)
+    c = Repo.exists?(from u in Links, where: u.blob == ^blob)
     #Repo.insert(changeset)
     if c, do: send_response_NO(conn), else: send_response_OK(conn, map)
     #IO.puts("Blob is #{blob} and Url is #{url} and count is #{c}")
-  end
-
-  post "/link" do
-
   end
 
   get "/" do
@@ -42,6 +38,14 @@ defmodule ShrinkLink.MyPlug do
     |> String.replace_suffix(".html", ".html.eex")
     |> EEx.eval_file(a: [])
     send_resp(conn, 200, body)
+  end
+
+  get "/:blob" do
+    IO.puts("blob is #{blob}")
+    c = Repo.exists?(from u in ShrinkLink.Links, where: u.blob == ^blob)
+    {:ok, address} = if(c, do: Repo.get_by(ShrinkLink.Links, blob: blob) |> Map.fetch(:url) , else: {:ok, "not_found"})
+
+    conn |> Plug.Conn.resp(:found, "") |> Plug.Conn.put_resp_header("location", "https://" <> address)
   end
 
   match _ do

@@ -1,8 +1,12 @@
 <html>
 <head>
-  <title>Root<title>
+  <title>Root</title>
 </head>
-<body>
-hi from html root
+<body style="text-align: center;">
+  <form action="/url">
+    blob: <input name="blob" type="text">
+    url: <input name="url" type="text">
+    <input type="submit">
+<form>
 </body>
 </html>
