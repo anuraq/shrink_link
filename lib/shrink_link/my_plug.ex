@@ -10,10 +10,11 @@ defmodule ShrinkLink.MyPlug do
     use Plug.Debugger
   end
 
+  plug Plug.Logger
   plug :match
-  plug Plug.Parsers, parsers: [:json],
-                   pass:  ["application/json"],
-                   json_decoder: Jason
+  plug Plug.Parsers, parsers: [:urlencoded, :json],
+                     pass:  ["application/json"],
+                     json_decoder: Jason
   plug :dispatch
 
 
@@ -29,6 +30,7 @@ defmodule ShrinkLink.MyPlug do
     #Repo.insert(changeset)
     if c, do: send_response_NO(conn), else: send_response_OK(conn, map)
     #IO.puts("Blob is #{blob} and Url is #{url} and count is #{c}")
+    send_resp(conn, 200, "OK");
   end
 
   get "/" do
@@ -40,7 +42,7 @@ defmodule ShrinkLink.MyPlug do
     send_resp(conn, 200, body)
   end
 
-  get "/:blob" do
+  get "/blob/:blob" do
     IO.puts("blob is #{blob}")
     c = Repo.exists?(from u in ShrinkLink.Links, where: u.blob == ^blob)
     {:ok, address} = if(c, do: Repo.get_by(ShrinkLink.Links, blob: blob) |> Map.fetch(:url) , else: {:ok, "not_found"})

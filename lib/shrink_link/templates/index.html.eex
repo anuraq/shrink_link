@@ -1,12 +1,37 @@
 <html>
 <head>
-  <title>Root</title>
+  <title>shrink link</title>
+  <style>
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  .header {
+    width: 300px;
+    margin: 50px auto;
+    text-align: center;
+    font-size: 3.5rem;
+    font-family: system-ui;
+  }
+  form {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    font-size: 2rem;
+  }
+  form > input {
+    height: 2.5rem;
+    margin-bottom: 10px;
+  }
+  </style>
 </head>
-<body style="text-align: center;">
-  <form action="/url">
+<body>
+  <div class="header">Shrink Link</div>
+  <form action="/url" method="POST">
     blob: <input name="blob" type="text">
     url: <input name="url" type="text">
     <input type="submit">
-<form>
+  </form>
 </body>
 </html>
