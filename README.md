@@ -1,21 +1,31 @@
 # ShrinkLink
 
-**TODO: Add description**
+**Link Blob to url**
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `shrink_link` to your list of dependencies in `mix.exs`:
-
+## Run Server
+Using mix
 ```elixir
-def deps do
-  [
-    {:shrink_link, "~> 0.1.0"}
-  ]
-end
+$ mix run --no-halt
 ```
+with an Interactive Shell
+```elixir
+$ iex -S mix run --no-halt
+```
+### This hosts a local server at `localhost:8080`
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/shrink_link](https://hexdocs.pm/shrink_link).
+with endpoints `/, /url, /blob/:blob`
 
+## POST /url
+inserts value in database if blob does not exists
+```json
+{
+  "blob" : blob_value,
+  "url" : url_value 
+}
+```
+> accepts `json` and `x-www-form-urlencoded`
+
+> if blob is `null` it is assigned a random 5 digit alphanumeric using `nanoid` library.
+
+## GET /blob/:blob
+redirects to valid url if `:blob` exits in database
