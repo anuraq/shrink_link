@@ -1,20 +1,30 @@
 <html>
 <head>
   <title>shrink link</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Potta+One&display=swap" rel="stylesheet">
   <style>
   body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0;
     margin: 0;
+    background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
   }
   .header {
     width: 300px;
     margin: 50px auto;
     text-align: center;
-    font-size: 3.5rem;
-    font-family: system-ui;
+    font-size: 3rem;
+    font-family: 'Potta One', cursive;
+    color: #952e8f;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow:0 0 20px #e03fd8;
   }
   form {
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     max-width: 300px;
